@@ -44,7 +44,9 @@ function currentMonthBounds() {
   const now = new Date();
   const m = (now.getMonth() + 1).toString().padStart(2, '0');
   const y = now.getFullYear();
-  return { year: y, month: m, start: `${y}-${m}-01`, end: `${y}-${m}-31` };
+  // Get last day of current month
+  const lastDay = new Date(y, now.getMonth() + 1, 0).getDate();
+  return { year: y, month: m, start: `${y}-${m}-01`, end: `${y}-${m}-${lastDay}` };
 }
 
 // ---- Categories ----
@@ -149,7 +151,8 @@ export async function getMonthlyReport(): Promise<MonthlyReport> {
 export async function getMonthlyStats(month: number, year: number): Promise<MonthlyReport> {
   const m = month.toString().padStart(2, '0');
   const start = `${year}-${m}-01`;
-  const end = `${year}-${m}-31`;
+  const lastDay = new Date(year, month, 0).getDate();
+  const end = `${year}-${m}-${lastDay}`;
 
   const { data } = await supabase
     .from('transactions')
@@ -175,7 +178,8 @@ export async function getMonthlyStats(month: number, year: number): Promise<Mont
 export async function getTotalIncome(month: number, year: number): Promise<number> {
   const m = month.toString().padStart(2, '0');
   const start = `${year}-${m}-01`;
-  const end = `${year}-${m}-31`;
+  const lastDay = new Date(year, month, 0).getDate();
+  const end = `${year}-${m}-${lastDay}`;
 
   const { data } = await supabase
     .from('transactions')
@@ -190,7 +194,8 @@ export async function getTotalIncome(month: number, year: number): Promise<numbe
 export async function getTotalExpenses(month: number, year: number): Promise<number> {
   const m = month.toString().padStart(2, '0');
   const start = `${year}-${m}-01`;
-  const end = `${year}-${m}-31`;
+  const lastDay = new Date(year, month, 0).getDate();
+  const end = `${year}-${m}-${lastDay}`;
 
   const { data } = await supabase
     .from('transactions')
